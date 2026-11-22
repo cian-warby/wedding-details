@@ -182,10 +182,15 @@ html[lang="ar"] .note .place, html[lang="ar"] .note .date { letter-spacing: 0; f
 
 /* stamp + postmark */
 .stamp-wrap { grid-area: stamp; position: relative; justify-self: end; margin-bottom: 1rem; }
+/* the shadow and tilt sit on a wrapper: a filter on the masked element itself gets masked away */
+.stamp-tilt {
+  transform: rotate(3deg);
+  filter: drop-shadow(0 1px 1.5px rgba(var(--shadow), .35)) drop-shadow(0 4px 8px rgba(var(--shadow), .14));
+}
 .stamp {
   --hole: 4px; --step: 10px;
-  width: 110px; height: 130px;
-  padding: 7px;
+  width: 120px; height: 140px;
+  padding: 8px;
   background: #FFFDF8;
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -193,14 +198,26 @@ html[lang="ar"] .note .place, html[lang="ar"] .note .date { letter-spacing: 0; f
           mask:
     linear-gradient(#000 0 0) content-box,
     radial-gradient(circle at center, transparent calc(var(--hole) - .5px), #000 var(--hole)) calc(var(--step) / -2) calc(var(--step) / -2) / var(--step) var(--step);
-  filter: drop-shadow(0 1px 1px rgba(var(--shadow), .25));
-  transform: rotate(3deg);
-  position: relative;
 }
-.stamp img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block; }
+.stamp-frame {
+  height: 100%;
+  display: flex; flex-direction: column;
+  border: 1.5px solid #A34F1F;
+  padding: 3px;
+  background: #FBF4E8;
+}
+.stamp-frame img {
+  flex: 1; min-height: 0;
+  width: 100%;
+  object-fit: cover; object-position: 50% 45%;
+  display: block;
+  outline: 1px solid rgba(163, 79, 31, .35);
+}
 .stamp .denom {
-  position: absolute; inset-inline-end: 11px; bottom: 10px;
-  font: 700 .72rem/1 var(--font-heading); letter-spacing: .08em;
+  display: block;
+  text-align: center;
+  padding-top: 3px;
+  font: 700 .66rem/1 var(--font-heading); letter-spacing: .1em;
   color: #A34F1F;
 }
 .postmark {
@@ -358,8 +375,9 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
   .logo { width: 58px; }
   .note .wish { display: none; }
   .note .date { margin-top: .7rem; }
-  .stamp { width: 70px; height: 86px; padding: 5px; --step: 8px; --hole: 3px; }
-  .stamp .denom { font-size: .6rem; inset-inline-end: 8px; bottom: 8px; }
+  .stamp { width: 80px; height: 96px; padding: 6px; --step: 8px; --hole: 3px; }
+  .stamp-frame { padding: 2px; border-width: 1px; }
+  .stamp .denom { font-size: .52rem; padding-top: 2px; }
   .postmark { width: 110px; height: 68px; top: 54px; inset-inline-end: 44px; }
   .address { padding: 0 0 1.25rem; }
   .input { font-size: 1.2rem; }
@@ -406,9 +424,13 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
       <span class="divider" aria-hidden="true"></span>
 
       <div class="stamp-wrap" aria-hidden="true">
-        <div class="stamp">
-          <img src="assets/stamp-couple.jpg" alt="" width="96" height="116">
-          <span class="denom">31·VII·27</span>
+        <div class="stamp-tilt">
+          <div class="stamp">
+            <div class="stamp-frame">
+              <img src="assets/stamp-couple.jpg" alt="" width="96" height="104">
+              <span class="denom">31·VII·27</span>
+            </div>
+          </div>
         </div>
         <svg class="postmark" viewBox="0 0 170 104" fill="none" stroke="currentColor">
           <defs><path id="ring" d="M52 52 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0"/></defs>
