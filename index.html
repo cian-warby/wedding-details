@@ -28,7 +28,6 @@
   --shadow: 32, 26, 14;
   --error: #9B2C1C;
   --sheen: rgba(255,255,255,.4);
-  --art-ground: var(--paper);
 
   --font-display: 'Beau Rivage', 'Brush Script MT', cursive;
   --font-heading: 'Cormorant Garamond', 'Times New Roman', serif;
@@ -41,7 +40,7 @@
   --ink: #EEEADC; --ink-soft: #C2BEA9; --ink-faint: #8C8973;
   --rule: rgba(238, 234, 220, 0.2); --rule-strong: rgba(238, 234, 220, 0.5);
   --sage: #ABAB7E; --terracotta: #D68A50; --terracotta-deep: #E89C68; --on-terracotta: #1B1B15;
-  --shadow: 0, 0, 0; --error: #F08C76; --sheen: rgba(255,255,255,.03); --art-ground: #E9DFCC;
+  --shadow: 0, 0, 0; --error: #F08C76; --sheen: rgba(255,255,255,.03);
   color-scheme: dark;
 }
 
@@ -130,11 +129,11 @@ html[lang="ar"] .title, html[lang="ar"] .label, html[lang="ar"] .btn { font-fami
 }
 .front {
   position: relative;
-  padding: 0 clamp(1.25rem, 3.5vw, 2.25rem) clamp(1.25rem, 3.5vw, 2rem);
+  padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.75rem) clamp(1.5rem, 3.5vw, 2.25rem);
   display: grid;
   grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1.3fr);
   grid-template-areas:
-    "art  art  art"
+    "note div  stamp"
     "note div  address"
     "foot foot foot";
   column-gap: clamp(1.25rem, 3vw, 2.25rem);
@@ -142,42 +141,20 @@ html[lang="ar"] .title, html[lang="ar"] .label, html[lang="ar"] .btn { font-fami
 }
 .back { transform: rotateY(180deg); overflow: hidden; display: grid; place-items: center; position: relative; }
 
-/* terracotta pantile edge, like the palacio's roofline */
+/* airmail postcard trim all the way round */
 .front::before, .back::before {
   content: "";
-  position: absolute; left: 0; right: 0; top: 0; height: 15px;
-  background:
-    linear-gradient(var(--terracotta), var(--terracotta)) top / 100% 5px no-repeat,
-    radial-gradient(circle at 50% 4px, var(--terracotta) 0 8px, transparent 8.6px) 0 0 / 18px 15px repeat-x;
-  opacity: .9;
-  z-index: 2;
+  position: absolute; inset: 0;
+  border-radius: 4px;
+  padding: 8px;
+  background: repeating-linear-gradient(-45deg,
+    var(--terracotta) 0 14px, transparent 14px 22px,
+    var(--sage) 22px 36px, transparent 36px 44px);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: .7;
   pointer-events: none;
-}
-/* hairline inner frame */
-.front::after, .back::after {
-  content: "";
-  position: absolute; inset: 24px 10px 10px;
-  border: 1px solid var(--rule);
-  pointer-events: none;
-}
-
-/* venue watercolour across the top */
-.art {
-  grid-area: art;
-  position: relative;
-  margin: 0 calc(-1 * clamp(1.25rem, 3.5vw, 2.25rem));
-  height: clamp(170px, 34vw, 290px);
-  background: var(--art-ground);
-  isolation: isolate;
-  overflow: hidden;
-}
-.art img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: 42% 40%;
-  display: block;
-  mix-blend-mode: multiply;
-  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
-          mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
 }
 
 /* left column: the postcard's message side */
@@ -201,10 +178,10 @@ html[lang="ar"] .note .venue { font-family: 'Amiri', serif; font-size: 1.5rem; f
 .note .date { font: 600 1.05rem/1 var(--font-heading); letter-spacing: .22em; color: var(--terracotta); margin: 1rem 0 0; }
 .note .wish { font-style: italic; font-size: 1rem; margin: 1.1rem 0 0; color: var(--ink-faint); max-width: 18rem; }
 html[lang="ar"] .note .place, html[lang="ar"] .note .date { letter-spacing: 0; font-family: 'Tajawal', sans-serif; }
-.divider { grid-area: div; background: var(--rule); margin: 1.75rem 0 1.5rem; }
+.divider { grid-area: div; background: var(--rule); margin: .5rem 0 1.5rem; }
 
 /* stamp + postmark */
-.stamp-wrap { position: absolute; top: 34px; inset-inline-end: clamp(22px, 3.5vw, 36px); z-index: 3; }
+.stamp-wrap { grid-area: stamp; position: relative; justify-self: end; margin-bottom: 1rem; }
 .stamp {
   --hole: 4px; --step: 10px;
   width: 110px; height: 130px;
@@ -240,8 +217,8 @@ html[dir="rtl"] .postmark { inset-inline-end: 30px; }
 /* address block */
 .address {
   grid-area: address;
-  align-self: center;
-  padding: 1.75rem 0 1.5rem;
+  align-self: start;
+  padding: 0 0 1.5rem;
 }
 .field { position: relative; }
 .label {
@@ -270,7 +247,7 @@ html[lang="ar"] .input { font-family: 'Tajawal', sans-serif; font-size: 1.15rem;
 .input:focus { border-bottom-color: var(--terracotta); box-shadow: 0 1px 0 var(--terracotta); }
 .input::placeholder { color: var(--ink-faint); opacity: .7; font-style: italic; }
 textarea.input {
-  height: calc(var(--line) * 4);
+  height: calc(var(--line) * 3);
   resize: none;
   border-bottom: 0;
   background-image: repeating-linear-gradient(to bottom,
@@ -371,20 +348,20 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
   :root { --line: 2.2rem; }
   .front {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "art" "note" "address" "foot";
-    padding: 0 1.25rem 1.5rem;
+    grid-template-areas: "stamp" "note" "address" "foot";
+    padding: 1.6rem 1.4rem 1.6rem;
   }
   .divider { display: none; }
-  .note { text-align: center; padding: 1.25rem 0; border-bottom: 1px dashed var(--rule); }
+  .note { text-align: center; padding: .25rem 0 1.25rem; border-bottom: 1px dashed var(--rule); margin-bottom: 1.25rem; }
+  .stamp-wrap { margin-bottom: 2.75rem; }
   .logo { margin: 0 auto .6rem; }
   .logo { width: 58px; }
   .note .wish { display: none; }
   .note .date { margin-top: .7rem; }
-  .stamp-wrap { top: 28px; }
   .stamp { width: 70px; height: 86px; padding: 5px; --step: 8px; --hole: 3px; }
   .stamp .denom { font-size: .6rem; inset-inline-end: 8px; bottom: 8px; }
   .postmark { width: 110px; height: 68px; top: 54px; inset-inline-end: 44px; }
-  .address { padding: 1.25rem 0; }
+  .address { padding: 0 0 1.25rem; }
   .input { font-size: 1.2rem; }
   .btn { width: 100%; justify-content: center; }
   .status { text-align: center; }
@@ -418,9 +395,6 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
       <input type="hidden" name="form" value="Guest address">
       <input type="text" name="_gotcha" class="sr" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-      <figure class="art" aria-hidden="true" style="margin-block:0">
-        <img src="assets/venue-watercolour.jpg" alt="" width="2342" height="1078">
-      </figure>
 
       <div class="note">
         <span class="logo" role="img" aria-label="Rand &amp; Cian monogram"></span>
@@ -473,7 +447,7 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
         <div class="row">
           <div class="field" id="f-address">
             <label class="label" for="address" data-i18n="lAddress">Postal address</label>
-            <textarea class="input" id="address" name="address" rows="4" autocomplete="street-address" required aria-describedby="e-address" data-i18n-ph="phAddress" placeholder="Street, town or city, postcode, country"></textarea>
+            <textarea class="input" id="address" name="address" rows="3" autocomplete="street-address" required aria-describedby="e-address" data-i18n-ph="phAddress" placeholder="Street, town or city, postcode, country"></textarea>
             <p class="err" id="e-address" data-i18n="eAddress">Please add the address we should post to.</p>
           </div>
         </div>
