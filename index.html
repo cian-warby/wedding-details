@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Your Details — Rand &amp; Cian</title>
+<meta name="description" content="Tell Rand & Cian where to send your wedding invitation.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23A34F1F'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' fill='%23F8F3E7' text-anchor='middle'%3ERC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Beau+Rivage&family=Cormorant+Garamond:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F1E9DA;
+  --bg-deep: #E7DCC8;
+  --paper: #FCF8EF;
+  --paper-edge: #EFE6D3;
+  --ink: #29271F;
+  --ink-soft: #5A5847;
+  --ink-faint: #8A8770;
+  --rule: rgba(41, 39, 31, 0.22);
+  --rule-strong: rgba(41, 39, 31, 0.5);
+  --sage: #6B6B45;
+  --terracotta: #A34F1F;
+  --terracotta-deep: #7A3814;
+  --on-terracotta: #FCF8EF;
+  --shadow: 32, 26, 14;
+  --error: #9B2C1C;
+  --sheen: rgba(255,255,255,.4);
+
+  --font-display: 'Beau Rivage', 'Brush Script MT', cursive;
+  --font-heading: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'EB Garamond', Georgia, serif;
+  --line: 2.4rem;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17170F; --bg-deep: #1F1E15; --paper: #2A291F; --paper-edge: #222118;
+    --ink: #EEEADC; --ink-soft: #C2BEA9; --ink-faint: #8C8973;
+    --rule: rgba(238, 234, 220, 0.2); --rule-strong: rgba(238, 234, 220, 0.5);
+    --sage: #ABAB7E; --terracotta: #D68A50; --terracotta-deep: #E89C68; --on-terracotta: #1B1B15;
+    --shadow: 0, 0, 0; --error: #F08C76; --sheen: rgba(255,255,255,.03);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17170F; --bg-deep: #1F1E15; --paper: #2A291F; --paper-edge: #222118;
+  --ink: #EEEADC; --ink-soft: #C2BEA9; --ink-faint: #8C8973;
+  --rule: rgba(238, 234, 220, 0.2); --rule-strong: rgba(238, 234, 220, 0.5);
+  --sage: #ABAB7E; --terracotta: #D68A50; --terracotta-deep: #E89C68; --on-terracotta: #1B1B15;
+  --shadow: 0, 0, 0; --error: #F08C76; --sheen: rgba(255,255,255,.03);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, var(--bg) 0%, transparent 70%),
+    var(--bg-deep);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(1.25rem, 4vw, 3rem) 16px 3rem;
+  overflow-x: hidden;
+}
+html[lang="ar"] body { font-family: 'Tajawal', sans-serif; font-size: 1.05rem; }
+html[lang="ar"] .script { font-family: 'Amiri', serif; font-weight: 700; }
+html[lang="ar"] .title, html[lang="ar"] .label, html[lang="ar"] .btn { font-family: 'Amiri', serif; letter-spacing: 0; text-transform: none; }
+
+/* ---------- top bar ---------- */
+.topbar {
+  width: 100%; max-width: 920px;
+  display: flex; justify-content: flex-end; gap: .5rem;
+}
+.chip {
+  font: 500 .875rem var(--font-body);
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .35rem .9rem;
+  cursor: pointer;
+  min-height: 36px;
+}
+.chip { display: inline-flex; align-items: center; justify-content: center; }
+.chip:hover { color: var(--ink); border-color: var(--rule-strong); }
+.chip:focus-visible, .btn:focus-visible, .linkish:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 3px; }
+
+/* ---------- heading ---------- */
+.intro { text-align: center; max-width: 34rem; margin: clamp(.5rem, 3vw, 1.5rem) auto clamp(1.75rem, 4vw, 2.75rem); }
+.script {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 8vw, 3.8rem);
+  line-height: 1.1;
+  color: var(--sage);
+  margin: 0;
+}
+.title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+  line-height: 1.15;
+  margin: .6rem 0 .75rem;
+  text-wrap: balance;
+}
+.lead { color: var(--ink-soft); margin: 0; text-wrap: pretty; }
+
+/* ---------- envelope ---------- */
+.stage { width: 100%; max-width: 860px; perspective: 2200px; }
+.envelope {
+  position: relative;
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 1.1s cubic-bezier(.6, .05, .2, 1);
+}
+.envelope.is-sent { transform: rotateY(180deg); }
+.face {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background:
+    linear-gradient(135deg, var(--sheen), transparent 40%),
+    var(--paper);
+  border-radius: 4px;
+  box-shadow:
+    0 1px 0 var(--paper-edge) inset,
+    0 2px 3px rgba(var(--shadow), .08),
+    0 18px 40px -12px rgba(var(--shadow), .28),
+    0 40px 80px -30px rgba(var(--shadow), .25);
+}
+.front {
+  padding: clamp(1.25rem, 3.5vw, 2.25rem);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "return  stamp"
+    "address address"
+    "foot    foot";
+  min-height: 520px;
+}
+.back { transform: rotateY(180deg); overflow: hidden; display: grid; place-items: center; }
+
+/* airmail border on the front */
+.front::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: 4px;
+  padding: 7px;
+  background: repeating-linear-gradient(-45deg,
+    var(--terracotta) 0 14px, transparent 14px 22px,
+    var(--sage) 22px 36px, transparent 36px 44px);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: .55;
+  pointer-events: none;
+}
+
+/* return address */
+.return { grid-area: return; font-size: .875rem; line-height: 1.45; color: var(--ink-soft); padding-top: .25rem; }
+.return .mono { font-family: var(--font-display); font-size: 1.9rem; line-height: 1; color: var(--sage); display: block; margin-bottom: .2rem; }
+html[lang="ar"] .return .mono { font-family: 'Amiri', serif; font-size: 1.5rem; }
+
+/* stamp + postmark */
+.stamp-wrap { grid-area: stamp; position: relative; justify-self: end; margin-inline-start: 1rem; }
+.stamp {
+  --hole: 4px; --step: 10px;
+  width: 110px; height: 130px;
+  padding: 7px;
+  background: #FFFDF8;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    radial-gradient(circle at center, transparent calc(var(--hole) - .5px), #000 var(--hole)) calc(var(--step) / -2) calc(var(--step) / -2) / var(--step) var(--step);
+          mask:
+    linear-gradient(#000 0 0) content-box,
+    radial-gradient(circle at center, transparent calc(var(--hole) - .5px), #000 var(--hole)) calc(var(--step) / -2) calc(var(--step) / -2) / var(--step) var(--step);
+  filter: drop-shadow(0 1px 1px rgba(var(--shadow), .25));
+  transform: rotate(3deg);
+  position: relative;
+}
+.stamp img { width: 100%; height: 100%; object-fit: cover; object-position: 54% 48%; display: block; }
+.stamp .denom {
+  position: absolute; inset-inline-start: 11px; bottom: 9px;
+  font: 700 .72rem/1 var(--font-heading); letter-spacing: .08em;
+  color: #FFFDF8; text-shadow: 0 1px 2px rgba(0,0,0,.55);
+}
+.postmark {
+  position: absolute;
+  width: 170px; height: 104px;
+  top: 46px; inset-inline-end: 70px;
+  color: var(--terracotta);
+  opacity: .78;
+  pointer-events: none;
+  transform: rotate(-8deg);
+}
+html[dir="rtl"] .postmark { inset-inline-end: 34px; }
+
+/* address block */
+.address {
+  grid-area: address;
+  width: min(100%, 470px);
+  justify-self: end;
+  align-self: center;
+  margin: 2.5rem 0 1.5rem;
+}
+.field { position: relative; }
+.label {
+  display: block;
+  font: 600 .72rem/1 var(--font-heading);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: .1rem;
+}
+.label .opt { font-family: var(--font-body); font-weight: 400; letter-spacing: 0; text-transform: none; font-style: italic; color: var(--ink-faint); font-size: .85rem; }
+.input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink);
+  font: 400 1.35rem/var(--line) var(--font-body);
+  height: var(--line);
+  padding: 0 .1rem;
+  border-radius: 0;
+  outline: none;
+  transition: border-color .2s;
+}
+html[lang="ar"] .input { font-family: 'Tajawal', sans-serif; font-size: 1.15rem; }
+.input:focus { border-bottom-color: var(--terracotta); box-shadow: 0 1px 0 var(--terracotta); }
+.input::placeholder { color: var(--ink-faint); opacity: .7; font-style: italic; }
+textarea.input {
+  height: calc(var(--line) * 4);
+  resize: none;
+  border-bottom: 0;
+  background-image: repeating-linear-gradient(to bottom,
+    transparent 0, transparent calc(var(--line) - 1px),
+    var(--rule-strong) calc(var(--line) - 1px), var(--rule-strong) var(--line));
+  background-attachment: local;
+  overflow: auto;
+}
+textarea.input:focus { box-shadow: none; background-image: repeating-linear-gradient(to bottom,
+    transparent 0, transparent calc(var(--line) - 1px),
+    var(--terracotta) calc(var(--line) - 1px), var(--terracotta) var(--line)); }
+
+.row + .row { margin-top: 1.4rem; }
+.amp-row { display: flex; align-items: flex-end; gap: .6rem; }
+.amp { font-family: var(--font-display); font-size: 2.4rem; line-height: 1; color: var(--terracotta); padding-bottom: .2rem; }
+html[lang="ar"] .amp { font-family: 'Amiri', serif; font-size: 1.6rem; }
+.amp-row .field { flex: 1; }
+
+.err { display: none; font-size: .85rem; color: var(--error); margin-top: .25rem; }
+.field.invalid .err { display: block; }
+.field.invalid .input { border-bottom-color: var(--error); }
+.field.invalid textarea.input { background-image: repeating-linear-gradient(to bottom,
+    transparent 0, transparent calc(var(--line) - 1px),
+    var(--error) calc(var(--line) - 1px), var(--error) var(--line)); }
+
+/* foot: email + send */
+.foot {
+  grid-area: foot;
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: 1.25rem 2rem;
+  border-top: 1px dashed var(--rule);
+  padding-top: 1.25rem;
+}
+.foot .field { flex: 1 1 260px; max-width: 360px; }
+.foot .input { font-size: 1.15rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font: 600 .875rem/1 var(--font-heading);
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--on-terracotta);
+  background: var(--terracotta);
+  border: 0; border-radius: 999px;
+  padding: 1rem 1.6rem;
+  min-height: 48px;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.btn:hover { background: var(--terracotta-deep); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: .65; cursor: progress; }
+.btn svg { width: 18px; height: 18px; }
+.status { width: 100%; margin: 0; font-size: .95rem; color: var(--error); min-height: 1.4em; text-align: end; }
+
+/* ---------- back of envelope ---------- */
+.back svg.flap { position: absolute; inset: 0; width: 100%; height: 100%; }
+.back .flap path { fill: none; stroke: var(--rule); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.back .flap .fill { fill: var(--paper-edge); stroke: none; opacity: .55; }
+.thanks { position: relative; text-align: center; padding: 3rem 1.5rem; max-width: 30rem; }
+.seal {
+  width: 112px; height: 112px; margin: 0 auto 1.5rem;
+  display: grid; place-items: center;
+  position: relative;
+  transform: scale(.6); opacity: 0;
+  transition: transform .5s cubic-bezier(.3,1.6,.5,1) 1s, opacity .3s 1s;
+}
+.envelope.is-sent .seal { transform: scale(1); opacity: 1; }
+.seal svg { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--terracotta); filter: drop-shadow(0 4px 6px rgba(var(--shadow), .35)); }
+.seal span { position: relative; font-family: var(--font-display); font-size: 2.3rem; color: var(--on-terracotta); line-height: 1; margin-top: .3rem; }
+.thanks h2 { font: 600 clamp(1.6rem, 4vw, 2.2rem)/1.2 var(--font-heading); margin: 0 0 .6rem; text-wrap: balance; }
+html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
+.thanks p { color: var(--ink-soft); margin: 0 0 1.5rem; }
+.linkish {
+  font: inherit; font-size: .95rem; color: var(--sage);
+  background: none; border: 0; padding: .4rem; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+
+.help { margin-top: 2.25rem; font-size: .95rem; color: var(--ink-faint); text-align: center; }
+.help a { color: var(--ink-soft); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- small screens: portrait envelope ---------- */
+@media (max-width: 640px) {
+  :root { --line: 2.2rem; }
+  .front {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "return  stamp"
+      "address address"
+      "foot    foot";
+    min-height: 0;
+    padding: 1.4rem 1.25rem 1.5rem;
+  }
+  .stamp { width: 80px; height: 100px; padding: 6px; --step: 8px; --hole: 3px; }
+  .postmark { width: 120px; height: 74px; top: 44px; inset-inline-end: 44px; }
+  .return { font-size: .8rem; }
+  .return .mono { font-size: 1.6rem; }
+  .address { margin: 2rem 0 1.25rem; width: 100%; }
+  .input { font-size: 1.2rem; }
+  .foot .field { max-width: none; }
+  .btn { width: 100%; justify-content: center; }
+  .status { text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .envelope { transition: none; }
+  .seal { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="chip" id="langToggle" type="button" lang="ar">عربي</button>
+  <button class="chip" id="themeToggle" type="button" aria-label="Toggle dark mode"></button>
+</div>
+
+<header class="intro">
+  <p class="script" data-i18n="names">Rand &amp; Cian</p>
+  <h1 class="title" data-i18n="title">Where shall we send your invitation?</h1>
+  <p class="lead" data-i18n="lead">Address the envelope below, just as you'd like it to arrive, and we'll take care of the rest.</p>
+</header>
+
+<main class="stage">
+  <div class="envelope" id="envelope">
+
+    <form class="face front" id="detailsForm" action="https://formspree.io/f/meeyvaek" method="POST" novalidate>
+      <input type="hidden" name="_subject" value="New Guest Address — Rand &amp; Cian Wedding">
+      <input type="hidden" name="form" value="Guest address">
+      <input type="text" name="_gotcha" class="sr" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="return" aria-hidden="true">
+        <span class="mono" data-i18n="mono">R &amp; C</span>
+        <span data-i18n="ret1">Palacio de Caranceja</span><br>
+        <span data-i18n="ret2">Cantabria, Spain</span>
+      </div>
+
+      <div class="stamp-wrap" aria-hidden="true">
+        <div class="stamp">
+          <img src="assets/venue-painting.jpg" alt="" width="96" height="116">
+          <span class="denom">17·VII·27</span>
+        </div>
+        <svg class="postmark" viewBox="0 0 170 104" fill="none" stroke="currentColor">
+          <defs><path id="ring" d="M52 52 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0"/></defs>
+          <circle cx="52" cy="52" r="46" stroke-width="2"/>
+          <circle cx="52" cy="52" r="29" stroke-width="1.2"/>
+          <text font-family="Cormorant Garamond, serif" font-weight="700" font-size="10.5" letter-spacing="2.4" fill="currentColor" stroke="none">
+            <textPath href="#ring">CARANCEJA · CANTABRIA · ESPAÑA ·</textPath>
+          </text>
+          <text x="52" y="49" text-anchor="middle" font-family="Cormorant Garamond, serif" font-weight="700" font-size="12" fill="currentColor" stroke="none">17 JUL</text>
+          <text x="52" y="63" text-anchor="middle" font-family="Cormorant Garamond, serif" font-weight="700" font-size="12" fill="currentColor" stroke="none">2027</text>
+          <g stroke-width="2.2" stroke-linecap="round">
+            <path d="M102 30 q8 -6 16 0 t16 0 t16 0 t16 0"/>
+            <path d="M104 44 q8 -6 16 0 t16 0 t16 0 t16 0"/>
+            <path d="M104 58 q8 -6 16 0 t16 0 t16 0 t16 0"/>
+            <path d="M102 72 q8 -6 16 0 t16 0 t16 0 t16 0"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="address">
+        <div class="row">
+          <div class="field" id="f-name">
+            <label class="label" for="name" data-i18n="lName">Your full name</label>
+            <input class="input" id="name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+            <p class="err" id="e-name" data-i18n="eName">Please add your name.</p>
+          </div>
+        </div>
+
+        <div class="row amp-row">
+          <span class="amp" aria-hidden="true">&amp;</span>
+          <div class="field">
+            <label class="label" for="partner"><span data-i18n="lPartner">Partner's name</span> <span class="opt" data-i18n="optional">— if applicable</span></label>
+            <input class="input" id="partner" name="partner_name" type="text" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" id="f-address">
+            <label class="label" for="address" data-i18n="lAddress">Postal address</label>
+            <textarea class="input" id="address" name="address" rows="4" autocomplete="street-address" required aria-describedby="e-address" data-i18n-ph="phAddress" placeholder="Street, town or city, postcode, country"></textarea>
+            <p class="err" id="e-address" data-i18n="eAddress">Please add the address we should post to.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot">
+        <div class="field" id="f-email">
+          <label class="label" for="email" data-i18n="lEmail">Email address</label>
+          <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-email">
+          <p class="err" id="e-email" data-i18n="eEmail">Please add a valid email address.</p>
+        </div>
+        <button class="btn" id="sendBtn" type="submit">
+          <span data-i18n="send">Post it</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 21 4l-5 17-4.5-7.5L3 11.5Z"/><path d="m11.5 13.5 4-4"/></svg>
+        </button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <section class="face back" id="backFace" aria-hidden="true">
+      <svg class="flap" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path class="fill" d="M0 0 L50 52 L100 0 Z"/>
+        <path d="M0 0 L50 52 L100 0"/>
+        <path d="M0 100 L42 46 M100 100 L58 46"/>
+      </svg>
+      <div class="thanks">
+        <div class="seal" aria-hidden="true">
+          <svg viewBox="0 0 100 100"><path fill="currentColor" d="M50 3c6 0 8 4 13 5s10-2 14 2 2 9 5 13 8 5 9 10-3 9-2 14 6 8 4 13-7 6-9 10-1 10-6 12-9-2-14-1-8 6-14 6-8-5-13-6-10 2-14-2-2-9-5-13-8-6-9-11 3-8 2-13-5-9-3-13 7-6 9-10 1-9 6-11 9 1 14 0 7-6 13-6Z"/></svg>
+          <span data-i18n="mono">R &amp; C</span>
+        </div>
+        <h2 id="thanksTitle" data-i18n="thanks">Thank you — it's on its way to us.</h2>
+        <p data-i18n="thanksBody">We'll keep your details safe and post your invitation nearer the time.</p>
+        <button class="linkish" id="againBtn" type="button" data-i18n="again">Send details for another household</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<p class="help" data-i18n-html="help">Questions? Email us at <a href="mailto:hello@randandcian.com">hello@randandcian.com</a></p>
+
+<script>
+(function () {
+  var T = {
+    en: {
+      names: "Rand & Cian",
+      title: "Where shall we send your invitation?",
+      lead: "Address the envelope below, just as you'd like it to arrive, and we'll take care of the rest.",
+      mono: "R & C", ret1: "Palacio de Caranceja", ret2: "Cantabria, Spain",
+      lName: "Your full name", lPartner: "Partner's name", optional: "— if applicable",
+      lAddress: "Postal address", phAddress: "Street, town or city, postcode, country",
+      lEmail: "Email address", send: "Post it", sending: "Posting…",
+      eName: "Please add your name.", eAddress: "Please add the address we should post to.", eEmail: "Please add a valid email address.",
+      fail: "That didn't send. Please try again, or email us directly.",
+      thanks: "Thank you — it's on its way to us.",
+      thanksNamed: "Thank you, {n} — it's on its way to us.",
+      thanksBody: "We'll keep your details safe and post your invitation nearer the time.",
+      again: "Send details for another household",
+      help: 'Questions? Email us at <a href="mailto:hello@randandcian.com">hello@randandcian.com</a>',
+      langBtn: "عربي", langBtnLang: "ar", dark: "Toggle dark mode"
+    },
+    ar: {
+      names: "رند وكيان",
+      title: "إلى أين نرسل دعوتكم؟",
+      lead: "اكتبوا العنوان على الظرف أدناه كما تحبون أن يصلكم، وسنتولى الباقي.",
+      mono: "ر و ك", ret1: "قصر كارانسيخا", ret2: "كانتابريا، إسبانيا",
+      lName: "الاسم الكامل", lPartner: "اسم الشريك", optional: "— إن وجد",
+      lAddress: "العنوان البريدي", phAddress: "الشارع، المدينة، الرمز البريدي، الدولة",
+      lEmail: "البريد الإلكتروني", send: "أرسلوه", sending: "جارٍ الإرسال…",
+      eName: "يرجى كتابة اسمكم.", eAddress: "يرجى كتابة العنوان البريدي.", eEmail: "يرجى كتابة بريد إلكتروني صحيح.",
+      fail: "لم يتم الإرسال. يرجى المحاولة مرة أخرى أو مراسلتنا مباشرة.",
+      thanks: "شكرًا لكم — بياناتكم في طريقها إلينا.",
+      thanksNamed: "شكرًا لك يا {n} — بياناتكم في طريقها إلينا.",
+      thanksBody: "سنحتفظ ببياناتكم بأمان ونرسل دعوتكم في الوقت المناسب.",
+      again: "إرسال بيانات أسرة أخرى",
+      help: 'هل لديكم سؤال؟ راسلونا عبر <a href="mailto:hello@randandcian.com">hello@randandcian.com</a>',
+      langBtn: "English", langBtnLang: "en", dark: "تبديل الوضع الداكن"
+    }
+  };
+  var html = document.documentElement;
+  var lang = "en";
+  var lastName = "";
+
+  function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+  function applyLang(l) {
+    lang = l; var d = T[l];
+    html.lang = l; html.dir = l === "ar" ? "rtl" : "ltr";
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n"); if (d[k]) el.textContent = d[k];
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+      el.innerHTML = d[el.getAttribute("data-i18n-html")];
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
+      el.placeholder = d[el.getAttribute("data-i18n-ph")];
+    });
+    var lb = document.getElementById("langToggle");
+    lb.textContent = d.langBtn; lb.lang = d.langBtnLang;
+    document.getElementById("themeToggle").setAttribute("aria-label", d.dark);
+    if (lastName) setThanks();
+    store("gd-lang", l);
+  }
+  document.getElementById("langToggle").addEventListener("click", function () {
+    applyLang(lang === "en" ? "ar" : "en");
+  });
+
+  /* theme */
+  var themeBtn = document.getElementById("themeToggle");
+  function isDark() {
+    var t = html.getAttribute("data-theme");
+    if (t) return t === "dark";
+    return window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  var SUN = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8 8 0 1 1 9.8 4a6.3 6.3 0 0 0 10.2 10.2Z"/></svg>';
+  function paintThemeBtn() { themeBtn.innerHTML = isDark() ? SUN : MOON; }
+  var savedTheme = load("gd-theme");
+  if (savedTheme) html.setAttribute("data-theme", savedTheme);
+  paintThemeBtn();
+  themeBtn.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    html.setAttribute("data-theme", next); store("gd-theme", next); paintThemeBtn();
+  });
+
+  /* form */
+  var form = document.getElementById("detailsForm");
+  var env = document.getElementById("envelope");
+  var back = document.getElementById("backFace");
+  var btn = document.getElementById("sendBtn");
+  var status = document.getElementById("status");
+  var checks = [
+    { id: "name", wrap: "f-name" },
+    { id: "address", wrap: "f-address" },
+    { id: "email", wrap: "f-email" }
+  ];
+  function validate(c) {
+    var el = document.getElementById(c.id);
+    el.value = el.value.replace(/^\s+/, "");
+    var ok = el.value.trim() !== "" && el.checkValidity();
+    document.getElementById(c.wrap).classList.toggle("invalid", !ok);
+    el.setAttribute("aria-invalid", ok ? "false" : "true");
+    return ok;
+  }
+  checks.forEach(function (c) {
+    var el = document.getElementById(c.id);
+    el.addEventListener("blur", function () { if (el.value) validate(c); });
+    el.addEventListener("input", function () {
+      if (document.getElementById(c.wrap).classList.contains("invalid")) validate(c);
+    });
+  });
+
+  function setThanks() {
+    var d = T[lang];
+    document.getElementById("thanksTitle").textContent =
+      lastName ? d.thanksNamed.replace("{n}", lastName) : d.thanks;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var firstBad = null;
+    checks.forEach(function (c) { if (!validate(c) && !firstBad) firstBad = document.getElementById(c.id); });
+    if (firstBad) { firstBad.focus(); return; }
+
+    btn.disabled = true; status.textContent = "";
+    var label = btn.querySelector("span"); label.textContent = T[lang].sending;
+
+    fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+      .then(function (r) { if (!r.ok) throw new Error("fail"); })
+      .then(function () {
+        lastName = document.getElementById("name").value.trim().split(/\s+/)[0];
+        setThanks();
+        env.classList.add("is-sent");
+        form.setAttribute("aria-hidden", "true");
+        form.inert = true;
+        back.removeAttribute("aria-hidden");
+        setTimeout(function () { document.getElementById("againBtn").focus({ preventScroll: true }); }, 1100);
+      })
+      .catch(function () { status.textContent = T[lang].fail; })
+      .finally(function () { btn.disabled = false; label.textContent = T[lang].send; });
+  });
+
+  document.getElementById("againBtn").addEventListener("click", function () {
+    form.reset(); lastName = "";
+    checks.forEach(function (c) { document.getElementById(c.wrap).classList.remove("invalid"); });
+    env.classList.remove("is-sent");
+    form.inert = false; form.removeAttribute("aria-hidden");
+    back.setAttribute("aria-hidden", "true");
+    setTimeout(function () { document.getElementById("name").focus(); }, 600);
+  });
+
+  var savedLang = load("gd-lang");
+  if (savedLang === "ar") applyLang("ar");
+})();
+</script>
+</body>
+</html>
