@@ -28,6 +28,7 @@
   --shadow: 32, 26, 14;
   --error: #9B2C1C;
   --sheen: rgba(255,255,255,.4);
+  --art-ground: var(--paper);
 
   --font-display: 'Beau Rivage', 'Brush Script MT', cursive;
   --font-heading: 'Cormorant Garamond', 'Times New Roman', serif;
@@ -35,22 +36,12 @@
   --line: 2.4rem;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #17170F; --bg-deep: #1F1E15; --paper: #2A291F; --paper-edge: #222118;
-    --ink: #EEEADC; --ink-soft: #C2BEA9; --ink-faint: #8C8973;
-    --rule: rgba(238, 234, 220, 0.2); --rule-strong: rgba(238, 234, 220, 0.5);
-    --sage: #ABAB7E; --terracotta: #D68A50; --terracotta-deep: #E89C68; --on-terracotta: #1B1B15;
-    --shadow: 0, 0, 0; --error: #F08C76; --sheen: rgba(255,255,255,.03);
-    color-scheme: dark;
-  }
-}
 :root[data-theme="dark"] {
   --bg: #17170F; --bg-deep: #1F1E15; --paper: #2A291F; --paper-edge: #222118;
   --ink: #EEEADC; --ink-soft: #C2BEA9; --ink-faint: #8C8973;
   --rule: rgba(238, 234, 220, 0.2); --rule-strong: rgba(238, 234, 220, 0.5);
   --sage: #ABAB7E; --terracotta: #D68A50; --terracotta-deep: #E89C68; --on-terracotta: #1B1B15;
-  --shadow: 0, 0, 0; --error: #F08C76; --sheen: rgba(255,255,255,.03);
+  --shadow: 0, 0, 0; --error: #F08C76; --sheen: rgba(255,255,255,.03); --art-ground: #E9DFCC;
   color-scheme: dark;
 }
 
@@ -138,41 +129,82 @@ html[lang="ar"] .title, html[lang="ar"] .label, html[lang="ar"] .btn { font-fami
     0 40px 80px -30px rgba(var(--shadow), .25);
 }
 .front {
-  padding: clamp(1.25rem, 3.5vw, 2.25rem);
+  position: relative;
+  padding: 0 clamp(1.25rem, 3.5vw, 2.25rem) clamp(1.25rem, 3.5vw, 2rem);
   display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1.3fr);
   grid-template-areas:
-    "return  stamp"
-    "address address"
-    "foot    foot";
-  min-height: 520px;
+    "art  art  art"
+    "note div  address"
+    "foot foot foot";
+  column-gap: clamp(1.25rem, 3vw, 2.25rem);
+  overflow: hidden;
 }
-.back { transform: rotateY(180deg); overflow: hidden; display: grid; place-items: center; }
+.back { transform: rotateY(180deg); overflow: hidden; display: grid; place-items: center; position: relative; }
 
-/* airmail border on the front */
-.front::before {
+/* terracotta pantile edge, like the palacio's roofline */
+.front::before, .back::before {
   content: "";
-  position: absolute; inset: 0;
-  border-radius: 4px;
-  padding: 7px;
-  background: repeating-linear-gradient(-45deg,
-    var(--terracotta) 0 14px, transparent 14px 22px,
-    var(--sage) 22px 36px, transparent 36px 44px);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  opacity: .55;
+  position: absolute; left: 0; right: 0; top: 0; height: 15px;
+  background:
+    linear-gradient(var(--terracotta), var(--terracotta)) top / 100% 5px no-repeat,
+    radial-gradient(circle at 50% 4px, var(--terracotta) 0 8px, transparent 8.6px) 0 0 / 18px 15px repeat-x;
+  opacity: .9;
+  z-index: 2;
+  pointer-events: none;
+}
+/* hairline inner frame */
+.front::after, .back::after {
+  content: "";
+  position: absolute; inset: 24px 10px 10px;
+  border: 1px solid var(--rule);
   pointer-events: none;
 }
 
-/* return address */
-.return { grid-area: return; font-size: .875rem; line-height: 1.45; color: var(--ink-soft); padding-top: .25rem; }
-.return .mono { font-family: var(--font-display); font-size: 1.9rem; line-height: 1; color: var(--sage); display: block; margin-bottom: .2rem; }
-html[lang="ar"] .return .mono { font-family: 'Amiri', serif; font-size: 1.5rem; }
+/* venue watercolour across the top */
+.art {
+  grid-area: art;
+  position: relative;
+  margin: 0 calc(-1 * clamp(1.25rem, 3.5vw, 2.25rem));
+  height: clamp(170px, 34vw, 290px);
+  background: var(--art-ground);
+  isolation: isolate;
+  overflow: hidden;
+}
+.art img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 42% 40%;
+  display: block;
+  mix-blend-mode: multiply;
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+}
+
+/* left column: the postcard's message side */
+.note {
+  grid-area: note;
+  align-self: center;
+  padding: 1.75rem 0 1.5rem;
+  color: var(--ink-soft);
+}
+.logo {
+  display: block;
+  width: 72px; aspect-ratio: 488 / 517;
+  margin-bottom: 1rem;
+  background: var(--sage);
+  -webkit-mask: url("assets/monogram.png") center / contain no-repeat;
+          mask: url("assets/monogram.png") center / contain no-repeat;
+}
+.note .venue { font-family: var(--font-display); font-size: 1.9rem; line-height: 1.1; color: var(--ink); margin: 0 0 .35rem; }
+html[lang="ar"] .note .venue { font-family: 'Amiri', serif; font-size: 1.5rem; font-weight: 700; }
+.note .place { font: 600 .72rem/1.5 var(--font-heading); letter-spacing: .2em; text-transform: uppercase; color: var(--sage); margin: 0; }
+.note .date { font: 600 1.05rem/1 var(--font-heading); letter-spacing: .22em; color: var(--terracotta); margin: 1rem 0 0; }
+.note .wish { font-style: italic; font-size: 1rem; margin: 1.1rem 0 0; color: var(--ink-faint); max-width: 18rem; }
+html[lang="ar"] .note .place, html[lang="ar"] .note .date { letter-spacing: 0; font-family: 'Tajawal', sans-serif; }
+.divider { grid-area: div; background: var(--rule); margin: 1.75rem 0 1.5rem; }
 
 /* stamp + postmark */
-.stamp-wrap { grid-area: stamp; position: relative; justify-self: end; margin-inline-start: 1rem; }
+.stamp-wrap { position: absolute; top: 34px; inset-inline-end: clamp(22px, 3.5vw, 36px); z-index: 3; }
 .stamp {
   --hole: 4px; --step: 10px;
   width: 110px; height: 130px;
@@ -188,30 +220,28 @@ html[lang="ar"] .return .mono { font-family: 'Amiri', serif; font-size: 1.5rem; 
   transform: rotate(3deg);
   position: relative;
 }
-.stamp img { width: 100%; height: 100%; object-fit: cover; object-position: 54% 48%; display: block; }
+.stamp img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block; }
 .stamp .denom {
-  position: absolute; inset-inline-start: 11px; bottom: 9px;
+  position: absolute; inset-inline-end: 11px; bottom: 10px;
   font: 700 .72rem/1 var(--font-heading); letter-spacing: .08em;
-  color: #FFFDF8; text-shadow: 0 1px 2px rgba(0,0,0,.55);
+  color: #A34F1F;
 }
 .postmark {
   position: absolute;
   width: 170px; height: 104px;
-  top: 46px; inset-inline-end: 70px;
+  top: 58px; inset-inline-end: 64px;
   color: var(--terracotta);
   opacity: .78;
   pointer-events: none;
   transform: rotate(-8deg);
 }
-html[dir="rtl"] .postmark { inset-inline-end: 34px; }
+html[dir="rtl"] .postmark { inset-inline-end: 30px; }
 
 /* address block */
 .address {
   grid-area: address;
-  width: min(100%, 470px);
-  justify-self: end;
   align-self: center;
-  margin: 2.5rem 0 1.5rem;
+  padding: 1.75rem 0 1.5rem;
 }
 .field { position: relative; }
 .label {
@@ -254,10 +284,6 @@ textarea.input:focus { box-shadow: none; background-image: repeating-linear-grad
     var(--terracotta) calc(var(--line) - 1px), var(--terracotta) var(--line)); }
 
 .row + .row { margin-top: 1.4rem; }
-.amp-row { display: flex; align-items: flex-end; gap: .6rem; }
-.amp { font-family: var(--font-display); font-size: 2.4rem; line-height: 1; color: var(--terracotta); padding-bottom: .2rem; }
-html[lang="ar"] .amp { font-family: 'Amiri', serif; font-size: 1.6rem; }
-.amp-row .field { flex: 1; }
 
 .err { display: none; font-size: .85rem; color: var(--error); margin-top: .25rem; }
 .field.invalid .err { display: block; }
@@ -269,13 +295,12 @@ html[lang="ar"] .amp { font-family: 'Amiri', serif; font-size: 1.6rem; }
 /* foot: email + send */
 .foot {
   grid-area: foot;
-  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
-  gap: 1.25rem 2rem;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end;
+  gap: .75rem 2rem;
   border-top: 1px dashed var(--rule);
   padding-top: 1.25rem;
+  position: relative; z-index: 1;
 }
-.foot .field { flex: 1 1 260px; max-width: 360px; }
-.foot .input { font-size: 1.15rem; }
 .btn {
   display: inline-flex; align-items: center; gap: .6rem;
   font: 600 .875rem/1 var(--font-heading);
@@ -295,10 +320,22 @@ html[lang="ar"] .amp { font-family: 'Amiri', serif; font-size: 1.6rem; }
 .status { width: 100%; margin: 0; font-size: .95rem; color: var(--error); min-height: 1.4em; text-align: end; }
 
 /* ---------- back of envelope ---------- */
-.back svg.flap { position: absolute; inset: 0; width: 100%; height: 100%; }
-.back .flap path { fill: none; stroke: var(--rule); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
-.back .flap .fill { fill: var(--paper-edge); stroke: none; opacity: .55; }
-.thanks { position: relative; text-align: center; padding: 3rem 1.5rem; max-width: 30rem; }
+.arch {
+  position: relative;
+  margin: 4rem 1.25rem 3rem;
+  width: min(100%, 26rem);
+  border: 1px solid var(--sage);
+  border-radius: 999px 999px 0 0 / 13rem 13rem 0 0;
+  padding: 3.5rem 1.75rem 2.25rem;
+  text-align: center;
+}
+.arch::before {
+  content: ""; position: absolute; inset: 8px 8px 0;
+  border: 1px solid var(--rule); border-bottom: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.thanks { position: relative; }
 .seal {
   width: 112px; height: 112px; margin: 0 auto 1.5rem;
   display: grid; place-items: center;
@@ -308,7 +345,13 @@ html[lang="ar"] .amp { font-family: 'Amiri', serif; font-size: 1.6rem; }
 }
 .envelope.is-sent .seal { transform: scale(1); opacity: 1; }
 .seal svg { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--terracotta); filter: drop-shadow(0 4px 6px rgba(var(--shadow), .35)); }
-.seal span { position: relative; font-family: var(--font-display); font-size: 2.3rem; color: var(--on-terracotta); line-height: 1; margin-top: .3rem; }
+.seal-mono {
+  position: relative;
+  width: 52px; aspect-ratio: 488 / 517;
+  background: var(--on-terracotta);
+  -webkit-mask: url("assets/monogram.png") center / contain no-repeat;
+          mask: url("assets/monogram.png") center / contain no-repeat;
+}
 .thanks h2 { font: 600 clamp(1.6rem, 4vw, 2.2rem)/1.2 var(--font-heading); margin: 0 0 .6rem; text-wrap: balance; }
 html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
 .thanks p { color: var(--ink-soft); margin: 0 0 1.5rem; }
@@ -327,23 +370,25 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
 @media (max-width: 640px) {
   :root { --line: 2.2rem; }
   .front {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "return  stamp"
-      "address address"
-      "foot    foot";
-    min-height: 0;
-    padding: 1.4rem 1.25rem 1.5rem;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "art" "note" "address" "foot";
+    padding: 0 1.25rem 1.5rem;
   }
-  .stamp { width: 80px; height: 100px; padding: 6px; --step: 8px; --hole: 3px; }
-  .postmark { width: 120px; height: 74px; top: 44px; inset-inline-end: 44px; }
-  .return { font-size: .8rem; }
-  .return .mono { font-size: 1.6rem; }
-  .address { margin: 2rem 0 1.25rem; width: 100%; }
+  .divider { display: none; }
+  .note { text-align: center; padding: 1.25rem 0; border-bottom: 1px dashed var(--rule); }
+  .logo { margin: 0 auto .6rem; }
+  .logo { width: 58px; }
+  .note .wish { display: none; }
+  .note .date { margin-top: .7rem; }
+  .stamp-wrap { top: 28px; }
+  .stamp { width: 70px; height: 86px; padding: 5px; --step: 8px; --hole: 3px; }
+  .stamp .denom { font-size: .6rem; inset-inline-end: 8px; bottom: 8px; }
+  .postmark { width: 110px; height: 68px; top: 54px; inset-inline-end: 44px; }
+  .address { padding: 1.25rem 0; }
   .input { font-size: 1.2rem; }
-  .foot .field { max-width: none; }
   .btn { width: 100%; justify-content: center; }
   .status { text-align: center; }
+  .arch { margin: 3.5rem 1rem 2.5rem; padding: 3rem 1.25rem 2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -362,7 +407,7 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
 <header class="intro">
   <p class="script" data-i18n="names">Rand &amp; Cian</p>
   <h1 class="title" data-i18n="title">Where shall we send your invitation?</h1>
-  <p class="lead" data-i18n="lead">Address the envelope below, just as you'd like it to arrive, and we'll take care of the rest.</p>
+  <p class="lead" data-i18n="lead">Address the postcard below, just as you'd like your invitation to arrive.</p>
 </header>
 
 <main class="stage">
@@ -373,16 +418,23 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
       <input type="hidden" name="form" value="Guest address">
       <input type="text" name="_gotcha" class="sr" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-      <div class="return" aria-hidden="true">
-        <span class="mono" data-i18n="mono">R &amp; C</span>
-        <span data-i18n="ret1">Palacio de Caranceja</span><br>
-        <span data-i18n="ret2">Cantabria, Spain</span>
+      <figure class="art" aria-hidden="true" style="margin-block:0">
+        <img src="assets/venue-watercolour.jpg" alt="" width="2342" height="1078">
+      </figure>
+
+      <div class="note">
+        <span class="logo" role="img" aria-label="Rand &amp; Cian monogram"></span>
+        <p class="venue" data-i18n="ret1">Palacio de Caranceja</p>
+        <p class="place" data-i18n="ret2">Caranceja · Cantabria · España</p>
+        <p class="date">31 · 07 · 2027</p>
+        <p class="wish" data-i18n="wish">Beneath the palm and under the arches, we'd love you there.</p>
       </div>
+      <span class="divider" aria-hidden="true"></span>
 
       <div class="stamp-wrap" aria-hidden="true">
         <div class="stamp">
-          <img src="assets/venue-painting.jpg" alt="" width="96" height="116">
-          <span class="denom">17·VII·27</span>
+          <img src="assets/stamp-couple.jpg" alt="" width="96" height="116">
+          <span class="denom">31·VII·27</span>
         </div>
         <svg class="postmark" viewBox="0 0 170 104" fill="none" stroke="currentColor">
           <defs><path id="ring" d="M52 52 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0"/></defs>
@@ -391,7 +443,7 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
           <text font-family="Cormorant Garamond, serif" font-weight="700" font-size="10.5" letter-spacing="2.4" fill="currentColor" stroke="none">
             <textPath href="#ring">CARANCEJA · CANTABRIA · ESPAÑA ·</textPath>
           </text>
-          <text x="52" y="49" text-anchor="middle" font-family="Cormorant Garamond, serif" font-weight="700" font-size="12" fill="currentColor" stroke="none">17 JUL</text>
+          <text x="52" y="49" text-anchor="middle" font-family="Cormorant Garamond, serif" font-weight="700" font-size="12" fill="currentColor" stroke="none">31 JUL</text>
           <text x="52" y="63" text-anchor="middle" font-family="Cormorant Garamond, serif" font-weight="700" font-size="12" fill="currentColor" stroke="none">2027</text>
           <g stroke-width="2.2" stroke-linecap="round">
             <path d="M102 30 q8 -6 16 0 t16 0 t16 0 t16 0"/>
@@ -411,8 +463,7 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
           </div>
         </div>
 
-        <div class="row amp-row">
-          <span class="amp" aria-hidden="true">&amp;</span>
+        <div class="row">
           <div class="field">
             <label class="label" for="partner"><span data-i18n="lPartner">Partner's name</span> <span class="opt" data-i18n="optional">— if applicable</span></label>
             <input class="input" id="partner" name="partner_name" type="text" autocomplete="off">
@@ -426,14 +477,17 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
             <p class="err" id="e-address" data-i18n="eAddress">Please add the address we should post to.</p>
           </div>
         </div>
+
+        <div class="row">
+          <div class="field" id="f-email">
+            <label class="label" for="email" data-i18n="lEmail">Email address</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-email">
+            <p class="err" id="e-email" data-i18n="eEmail">Please add a valid email address.</p>
+          </div>
+        </div>
       </div>
 
       <div class="foot">
-        <div class="field" id="f-email">
-          <label class="label" for="email" data-i18n="lEmail">Email address</label>
-          <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-email">
-          <p class="err" id="e-email" data-i18n="eEmail">Please add a valid email address.</p>
-        </div>
         <button class="btn" id="sendBtn" type="submit">
           <span data-i18n="send">Post it</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 21 4l-5 17-4.5-7.5L3 11.5Z"/><path d="m11.5 13.5 4-4"/></svg>
@@ -443,20 +497,15 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
     </form>
 
     <section class="face back" id="backFace" aria-hidden="true">
-      <svg class="flap" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <path class="fill" d="M0 0 L50 52 L100 0 Z"/>
-        <path d="M0 0 L50 52 L100 0"/>
-        <path d="M0 100 L42 46 M100 100 L58 46"/>
-      </svg>
-      <div class="thanks">
+      <div class="arch"><div class="thanks">
         <div class="seal" aria-hidden="true">
           <svg viewBox="0 0 100 100"><path fill="currentColor" d="M50 3c6 0 8 4 13 5s10-2 14 2 2 9 5 13 8 5 9 10-3 9-2 14 6 8 4 13-7 6-9 10-1 10-6 12-9-2-14-1-8 6-14 6-8-5-13-6-10 2-14-2-2-9-5-13-8-6-9-11 3-8 2-13-5-9-3-13 7-6 9-10 1-9 6-11 9 1 14 0 7-6 13-6Z"/></svg>
-          <span data-i18n="mono">R &amp; C</span>
+          <span class="seal-mono"></span>
         </div>
         <h2 id="thanksTitle" data-i18n="thanks">Thank you — it's on its way to us.</h2>
         <p data-i18n="thanksBody">We'll keep your details safe and post your invitation nearer the time.</p>
         <button class="linkish" id="againBtn" type="button" data-i18n="again">Send details for another household</button>
-      </div>
+      </div></div>
     </section>
 
   </div>
@@ -470,8 +519,9 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
     en: {
       names: "Rand & Cian",
       title: "Where shall we send your invitation?",
-      lead: "Address the envelope below, just as you'd like it to arrive, and we'll take care of the rest.",
-      mono: "R & C", ret1: "Palacio de Caranceja", ret2: "Cantabria, Spain",
+      lead: "Address the postcard below, just as you'd like your invitation to arrive.",
+      mono: "R & C", ret1: "Palacio de Caranceja", ret2: "Caranceja · Cantabria · España",
+      wish: "Beneath the palm and under the arches, we'd love you there.",
       lName: "Your full name", lPartner: "Partner's name", optional: "— if applicable",
       lAddress: "Postal address", phAddress: "Street, town or city, postcode, country",
       lEmail: "Email address", send: "Post it", sending: "Posting…",
@@ -487,8 +537,9 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
     ar: {
       names: "رند وكيان",
       title: "إلى أين نرسل دعوتكم؟",
-      lead: "اكتبوا العنوان على الظرف أدناه كما تحبون أن يصلكم، وسنتولى الباقي.",
-      mono: "ر و ك", ret1: "قصر كارانسيخا", ret2: "كانتابريا، إسبانيا",
+      lead: "اكتبوا العنوان على البطاقة أدناه كما تحبون أن تصلكم دعوتكم.",
+      mono: "ر و ك", ret1: "قصر كارانسيخا", ret2: "كارانسيخا · كانتابريا · إسبانيا",
+      wish: "تحت النخلة وبين الأقواس، يسعدنا وجودكم معنا.",
       lName: "الاسم الكامل", lPartner: "اسم الشريك", optional: "— إن وجد",
       lAddress: "العنوان البريدي", phAddress: "الشارع، المدينة، الرمز البريدي، الدولة",
       lEmail: "البريد الإلكتروني", send: "أرسلوه", sending: "جارٍ الإرسال…",
@@ -536,7 +587,7 @@ html[lang="ar"] .thanks h2 { font-family: 'Amiri', serif; }
   function isDark() {
     var t = html.getAttribute("data-theme");
     if (t) return t === "dark";
-    return window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+    return false;
   }
   var SUN = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>';
   var MOON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8 8 0 1 1 9.8 4a6.3 6.3 0 0 0 10.2 10.2Z"/></svg>';
